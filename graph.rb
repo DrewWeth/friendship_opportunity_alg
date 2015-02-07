@@ -17,7 +17,7 @@ def set_conns(conn)
   conn.length.times do
     temp_node = 0
     conn.length.times do
-      puts node.to_s + ", " + temp_node.to_s
+      # puts node.to_s + ", " + temp_node.to_s
       if node != temp_node and !conn[temp_node].include?(node)
         conn[node] << temp_node
       end
@@ -41,13 +41,45 @@ def display_conns(size)
   end
 end
 
-def display_conn(size)
+def display_conn(arg)
+  size = arg[0].to_i
   conn = init(size)
   conn = set_conns(conn)
   puts conn.inspect
   puts conn.flatten.length
 end
 
-display_conn(ARGV[0].to_i)
+def eff_display_conn(arg)
+  total = 0
+  count = arg[0].to_i - 1
+  count.times do
+    total += count
+    count -= 1
+  end
+  puts total
+end
 
+# display_conn(ARGV[0].to_i)
+# eff_display_conn()
 # display_conns(3)
+
+
+
+def time_method(method, *args)
+  beginning_time = Time.now
+  self.send(method, args)
+  end_time = Time.now
+  # puts "Time elapsed #{(end_time - beginning_time)*1000} milliseconds"
+  return (end_time - beginning_time)*1000
+end
+
+
+
+times = []
+
+times << time_method(:display_conn, ARGV[0])
+times << time_method(:eff_display_conn, ARGV[0])
+# times << time_method(:pyramid_display_conn, ARGV[0])
+
+puts times.inspect
+puts (times[0]/times[1]).round.to_s + "% increase in efficiency"
